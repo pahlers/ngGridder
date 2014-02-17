@@ -56,6 +56,7 @@ angular.module('ngGridder', [])
       replace: true,
       controller: function($scope) {
         $scope.showSettings = false;
+
         $scope.minWidth = gridderSettings.panel.minWidth;
         $scope.maxWidth = gridderSettings.panel.maxWidth;
 
@@ -70,6 +71,10 @@ angular.module('ngGridder', [])
             $scope.colClasses += 'col-' + key + '-' + value + ' ';
           });
         }, true);
+
+        $scope.toggleSettings = function() {
+          $scope.showSettings = !$scope.showSettings;
+        };
 
         $scope.remove = function() {
           $scope.removeCol($scope.$index);
@@ -129,8 +134,8 @@ angular.module('ngGridder', [])
                 element.find(target).append(panelElement);
               };
 
-            if(scope.settings){
-              jQuery.extend(true, panelScope, scope.settings);
+            if(scope.col.settings){
+              panelScope.settings = scope.col.settings;
             }
 
             // get the panel.html
