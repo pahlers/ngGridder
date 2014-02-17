@@ -1,9 +1,3 @@
-/**
-* ngGridder
-*
-* Description
-*
-*/
 angular.module('ngGridder', [])
   .provider('ngGridderSettings', function ngGridderSettingsProvider() {
     'use strict';
@@ -15,9 +9,9 @@ angular.module('ngGridder', [])
         settingsHtml: '/settings.html',
       },
       template:{
-        ngGridder: 'ng-gridder.html',
-        ngGridderRow: 'ng-gridder-row.html',
-        ngGridderCol: 'ng-gridder-col.html'
+        ngGridder: 'ngGridder.html',
+        ngGridderRow: 'ngGridder-row.html',
+        ngGridderCol: 'ngGridder-col.html'
       },
       panel:{
         minWidth: 1,

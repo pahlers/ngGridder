@@ -51,9 +51,9 @@ With ```ngGridderSettingsProvider``` you can change a few defaults.
     settingsHtml: '/settings.html', // template name of the settings
   },
   template:{
-    ngGridder: 'ng-gridder.html', // template of the ngGridder directive
-    ngGridderRow: 'ng-gridder-row.html', // template of the ngGridder row directive
-    ngGridderCol: 'ng-gridder-col.html' // template of the ngGridder col directive
+    ngGridder: 'ngGridder.html', // template of the ngGridder directive
+    ngGridderRow: 'ngGridder-row.html', // template of the ngGridder row directive
+    ngGridderCol: 'ngGridder-col.html' // template of the ngGridder col directive
   },
   panel:{
     minWidth: 1, // Minimal panel width

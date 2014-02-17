@@ -26,7 +26,8 @@ module.exports = function(grunt) {
     yo: yoConfig,
     meta: {
       banner: '/**\n' +
-      ' * <%= pkg.name %>\n' +
+      ' * <%= pkg.name %>\n\n' +
+      ' * <%= pkg.description %>\n\n' +
       ' * @version v<%= pkg.version %> - <%= grunt.template.today("yyyy-mm-dd") %>\n' +
       ' * @link <%= pkg.homepage %>\n' +
       ' * @author <%= pkg.author.name %> <<%= pkg.author.email %>> <%= pkg.author.url %>\n' +
@@ -97,17 +98,6 @@ module.exports = function(grunt) {
         }
       }
     },
-    less: {
-      options: {
-        // dumpLineNumbers: 'all',
-        paths: ['<%= yo.src %>']
-      },
-      dist: {
-        files: {
-          '<%= yo.src %>/<%= yo.name %>.css': '<%= yo.src %>/<%= yo.name %>.less'
-        }
-      }
-    },
     jshint: {
       gruntfile: {
         options: {
@@ -157,7 +147,7 @@ module.exports = function(grunt) {
     concat: {
       options: {
         banner: '<%= meta.banner %>',
-        stripBanners: true
+        // stripBanners: true
       },
       dist: {
         src: ['<%= yo.src %>/<%= pkg.name %>.js'],
@@ -171,6 +161,14 @@ module.exports = function(grunt) {
       dist: {
         src: '<%= concat.dist.dest %>',
         dest: '<%= yo.dist %>/<%= pkg.name %>.min.js'
+      }
+    },
+    copy: {
+      dist: {
+        expand: true,
+        cwd: '<%= yo.src %>',
+        src: '*.html',
+        dest: '<%= yo.dist %>',
       }
     }
   });
@@ -191,9 +189,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'less:dist',
     'ngmin:dist',
-    'uglify:dist'
+    'uglify:dist',
+    'copy:dist'
   ]);
 
   grunt.registerTask('release', [

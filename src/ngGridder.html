@@ -1,0 +1,12 @@
+<div class="ng-gridder">
+  <div class="ng-gridder-rows">
+    <ng-gridder-row ng-repeat="row in layout" row="row" types="types"></ng-gridder-row>
+  </div>
+
+  <div ng-if="editable" class="row">
+    <div class="ng-gridder-nav ng-gridder-nav-main">
+      <button class="btn ng-gridder-nav-add-row" ng-click="addRow()">Add row</button>
+    </div>
+  </div>
+</div>
+
