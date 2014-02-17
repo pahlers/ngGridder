@@ -1,6 +1,6 @@
 # ngGridder
 
-Combine AngularJS and Twitter bootstrap into a grid. Every grid panel loads a directive for settings and the content. (code laughing-meme)
+Combine AngularJS and Twitter bootstrap into a grid (codename laughing-meme). Every grid panel loads a directive for settings and the content. Did you know you can nest ngGridder in ngGridder? See the example.
 
 ## Getting Started
 
