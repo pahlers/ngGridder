@@ -4,7 +4,7 @@
 * Example Module
 *
 */
-angular.module('example', ['ngGridder', 'abcExample', 'defExample'])
+angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
   .controller('ExampleCtrl', function($scope) {
     $scope.changed = function() {
       console.log('ExampleCtrl: something changed');
@@ -13,6 +13,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample'])
     $scope.editable = true;
 
     $scope.panelTypes = [
+      'grid',
       'abc',
       'def'
     ];
@@ -48,18 +49,9 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample'])
               xs: 12,
               sm: 12,
               md: 6,
-              lg: 3
+              lg: 6
             },
             type: 'abc'
-          }, {
-            settings: {},
-            width: {
-              xs: 12,
-              sm: 12,
-              md: 6,
-              lg: 3
-            },
-            type: 'def'
           }
         ]
       }, {
@@ -82,6 +74,65 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample'])
               sm: 12,
               md: 6,
               lg: 3
+            },
+            type: 'abc'
+          },
+          {
+            settings: {
+              layout: [
+                {
+                  cols:[
+                    {
+                      settings: {
+                        title:  'Hello'
+                      },
+                      width: {
+                        xs: 12,
+                        sm: 12,
+                        md: 6,
+                        lg: 6
+                      },
+                      type: 'abc'
+                    }, {
+                      settings: {
+                        title:  'underworld'
+                      },
+                      width: {
+                        xs: 12,
+                        sm: 12,
+                        md: 12,
+                        lg: 6
+                      },
+                      type: 'def'
+                    }
+                  ]
+                }
+              ],
+              panelTypes:['abc','def'],
+              changed: $scope.changed,
+              editable: true
+            },
+            width: {
+              xs: 12,
+              sm: 12,
+              md: 12,
+              lg: 6
+            },
+            type: 'grid'
+          }
+        ]
+      },
+      {
+        cols: [
+          {
+            settings: {
+              title:  'Hello wideworld'
+            },
+            width: {
+              xs: 12,
+              sm: 12,
+              md: 12,
+              lg: 12
             },
             type: 'abc'
           }
