@@ -6,8 +6,10 @@ Combine AngularJS and Twitter Bootstrap grid system into an editable grid (coden
 
 Download the [production version][min] or the [development version][max].
 
-[min]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/ng-gridder.min.js
-[max]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/ng-gridder.js
+[min]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/ngGridder.min.js
+[max]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/ngGridder.js
+
+And the *.html files in the [dist][https://github.com/eonlepapillon/ngGridder/blob/master/dist/]
 
 Install ```jQuery```, ```Twitter bootstrap``` and ```Angular``` (duh!).
 
