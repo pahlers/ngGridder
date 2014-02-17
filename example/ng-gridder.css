@@ -1,0 +1,62 @@
+.ng-gridder-rows{
+  margin-bottom: 1em;
+}
+
+.ng-gridder-row,
+.ng-gridder-col{
+  overflow: hidden;
+  min-height: 20em;
+  position: relative;
+}
+.ng-gridder-row{
+  border-bottom: 1px solid rgba(200, 200, 200 , 0.7);
+}
+.ng-gridder-col{
+  background-color: rgba(200, 200, 200 , 0.5);
+}
+.ng-gridder-nav-row,
+.ng-gridder-nav-col{
+  left: 0;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+
+  -webkit-transform: translateX(calc(-100% + 0.5em));
+  -moz-transform: translateX(calc(-100% + 0.5em));
+  -ms-transform: translateX(calc(-100% + 0.5em));
+  -o-transform: translateX(calc(-100% + 0.5em));
+  transform: translateX(calc(-100% + 0.5em));
+
+  -webkit-transition: -webkit-transform 0.5s ease;
+  -moz-transition: -moz-transform 0.5s ease;
+  -ms-transition: -ms-transform 0.5s ease;
+  -o-transition: -o-transform 0.5s ease;
+  transition: transform 0.5s ease;
+}
+.ng-gridder-row-empty .ng-gridder-nav-row{
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+}
+.ng-gridder-nav-row{
+  z-index: 100;
+}
+.ng-gridder-col-first .ng-gridder-nav-col{
+  left: 0;
+  position: absolute;
+  top: 3em;
+}
+.ng-gridder-nav-row:hover,
+.ng-gridder-nav-col:hover{
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+}
+
+.ng-gridder-settings-form{
+  margin-bottom: 1em;
+}

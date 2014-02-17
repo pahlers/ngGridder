@@ -1,0 +1,14 @@
+<div ng-class="{'ng-gridder-row-first': $first, 'ng-gridder-row-last': $last, 'ng-gridder-row-empty': cols.length === 0}" class="row ng-gridder-row">
+  <div ng-if="editable" class="ng-gridder-nav ng-gridder-nav-row">
+    <div class="btn-group">
+      <button class="btn ng-gridder-nav-add-col" ng-click="addCol()">Add panel</button>
+      <button class="btn ng-gridder-nav-remove-row" ng-click="remove()"><span class="glyphicon glyphicon-minus"></span></button>
+      <button class="btn ng-gridder-nav-up-row" ng-click="up()" ng-if="!$first"><span class="glyphicon glyphicon-chevron-up"></span></button>
+      <button class="btn ng-gridder-nav-down-row" ng-click="down()" ng-if="!$last"><span class="glyphicon glyphicon-chevron-down"></span></button>
+    </div>
+  </div>
+
+  <div class="ng-gridder-cols">
+    <ng-gridder-col ng-repeat="col in cols" types="types"></ng-gridder-col>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+/bower_components/
+/node_modules/
+
+.DS_Store
+
+*.sublime-*
+
+test-results.xml
