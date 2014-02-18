@@ -1,7 +1,12 @@
 {
   "name": "ngGridder",
-  "version": "0.1.0",
-  "main": "dist/ng-gridder.js",
+  "version": "0.1.1",
+  "main": [
+    "dist/ngGridder.js",
+    "dist/ngGridder.html",
+    "dist/ngGridder-row.html",
+    "dist/ngGridder-col.html"
+  ],
   "description": "Combine AngularJS and Twitter Bootstrap grid system into an editable grid (codename laughing-meme). Every grid panel loads a directive for settings and the content.",
   "authors": [{
     "name": "Peter Ahlers (eonlepapillon)",
