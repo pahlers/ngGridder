@@ -50,6 +50,10 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
           $scope.showSettings = false;
           $scope.minWidth = gridderSettings.panel.minWidth;
           $scope.maxWidth = gridderSettings.panel.maxWidth;
+          $scope.colEditable = $scope.rowEditable;
+          if ($scope.col.editable !== undefined) {
+            $scope.colEditable = $scope.col.editable;
+          }
           $scope.master = {
             settings: angular.copy($scope.col.settings),
             width: angular.copy($scope.col.width)
@@ -154,6 +158,10 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
         function ($scope) {
           $scope.name = $scope.row.name;
           $scope.cols = $scope.row.cols;
+          $scope.rowEditable = $scope.globalEditable;
+          if ($scope.row.editable !== undefined) {
+            $scope.rowEditable = $scope.row.editable;
+          }
           $scope.remove = function () {
             $scope.removeRow($scope.$index);
           };

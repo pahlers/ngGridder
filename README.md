@@ -69,8 +69,10 @@ With ```ngGridderSettingsProvider``` you can change a few defaults.
 ```javascript
 $scope.layout = [
   { // A Row
+    editable: true, // true for read-write, false for read-only (overrules the global)
     cols: [
       { // A col (or panel)
+        editable: true, // true for read-write, false for read-only (overrules the global and row)
         type: '…', // Name of the panel directory
         width: { // Bootstrap grid system http://getbootstrap.com/css/#grid
           xs: 12, // Class prefix .col-xs-

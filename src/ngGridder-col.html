@@ -1,5 +1,5 @@
 <div ng-class="{'ng-gridder-col-first': $first, 'ng-gridder-col-last': $last}" class="ng-gridder-col {{colClasses}}">
-  <div ng-if="globalEditable" class="ng-gridder-nav ng-gridder-nav-col">
+  <div ng-if="colEditable" class="ng-gridder-nav ng-gridder-nav-col">
     <div class="btn-group">
       <button class="btn ng-gridder-nav-settings-col" ng-click="toggleSettings()"><span class="glyphicon glyphicon-cog"></span></button>
       <button class="btn ng-gridder-nav-left-col" ng-click="left()" ng-if="!$first"><span class="glyphicon glyphicon-chevron-left"></span></button>

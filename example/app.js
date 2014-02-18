@@ -33,6 +33,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
             },
             type: 'abc'
           }, {
+            editable: false,
             settings: {},
             width: {
               xs: 12,
@@ -55,6 +56,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
           }
         ]
       }, {
+        editable: false,
         cols: [
           {
             settings: {},

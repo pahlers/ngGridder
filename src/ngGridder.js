@@ -53,6 +53,11 @@ angular.module('ngGridder', [])
 
         $scope.minWidth = gridderSettings.panel.minWidth;
         $scope.maxWidth = gridderSettings.panel.maxWidth;
+        $scope.colEditable = $scope.rowEditable;
+
+        if($scope.col.editable !== undefined){
+          $scope.colEditable = $scope.col.editable;
+        }
 
         $scope.master = {
           settings: angular.copy($scope.col.settings),
@@ -186,6 +191,11 @@ angular.module('ngGridder', [])
       controller: function($scope) {
         $scope.name = $scope.row.name;
         $scope.cols = $scope.row.cols;
+        $scope.rowEditable = $scope.globalEditable;
+
+        if($scope.row.editable !== undefined){
+          $scope.rowEditable = $scope.row.editable;
+        }
 
         $scope.remove = function() {
           $scope.removeRow($scope.$index);

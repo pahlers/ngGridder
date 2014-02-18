@@ -116,31 +116,57 @@ describe('Module: ngGridder', function () {
       $scope.layout = layout;
     });
 
-    it('should have two .ng-gridder-rows', function () {
+    it('should render two .ng-gridder-rows', function () {
       elm = render();
       expect(elm.find('.ng-gridder-row').length).toBe(2);
     });
 
-    it('should have five .ng-gridder-col', function () {
+    it('should render five .ng-gridder-col', function () {
       elm = render();
       expect(elm.find('.ng-gridder-col').length).toBe(5);
     });
 
-    it('should have compiled three .abc-settings', function () {
+    it('should render three .abc-settings', function () {
       elm = render();
       expect(elm.find('.abc-settings').length).toBe(3);
     });
 
-    it('should have enabled edit navigation when editable is true', function () {
+    it('should enable navigation when editable is true', function () {
       $scope.editable = true;
       elm = render();
       expect(elm.find('.ng-gridder-nav').length).toBe(8);
     });
 
-    it('should have disables edit navigation when editable is false', function () {
+    it('should disable edit navigation when editable is false', function () {
       $scope.editable = false;
       elm = render();
       expect(elm.find('.ng-gridder-nav').length).toBe(0);
+    });
+
+    it('should overrule the global with row editable for row and col', function () {
+      $scope.editable = false;
+      $scope.layout[0].editable = true;
+
+      elm = render();
+      
+      var ngGridderRow = elm.find('.ng-gridder-row').first();
+
+      expect(ngGridderRow.find('.ng-gridder-nav-row').length).toBe(1);
+      expect(ngGridderRow.find('.ng-gridder-nav-col').length).toBe(4);
+    });
+
+    it('should overrule the global and row with col editable', function () {
+      $scope.editable = true;
+      $scope.layout[0].editable = false;
+      $scope.layout[0].cols[0].editable = true;
+      $scope.layout[0].cols[1].editable = true;
+
+      elm = render();
+      
+      var ngGridderRow = elm.find('.ng-gridder-row').first();
+
+      expect(ngGridderRow.find('.ng-gridder-nav-row').length).toBe(0);
+      expect(ngGridderRow.find('.ng-gridder-nav-col').length).toBe(2);
     });
   });
 
