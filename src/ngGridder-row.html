@@ -1,5 +1,5 @@
 <div ng-class="{'ng-gridder-row-first': $first, 'ng-gridder-row-last': $last, 'ng-gridder-row-empty': cols.length === 0}" class="row ng-gridder-row">
-  <div ng-if="editable" class="ng-gridder-nav ng-gridder-nav-row">
+  <div ng-if="globalEditable" class="ng-gridder-nav ng-gridder-nav-row">
     <div class="btn-group">
       <button class="btn ng-gridder-nav-add-col" ng-click="addCol()">Add panel</button>
       <button class="btn ng-gridder-nav-remove-row" ng-click="remove()"><span class="glyphicon glyphicon-minus"></span></button>

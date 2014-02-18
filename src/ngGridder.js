@@ -100,11 +100,8 @@ angular.module('ngGridder', [])
         };
 
         $scope.cancel = function() {
-          console.log('cancel', $scope.master, $scope.col);
-
           $scope.col.settings = angular.copy($scope.master.settings);
           $scope.col.width = angular.copy($scope.master.width);
-
         };
       },
       link: function(scope, element) {
@@ -287,7 +284,7 @@ angular.module('ngGridder', [])
       restrict: 'E',
       replace: true,
       scope: {
-        editable: '=',
+        globalEditable: '=editable',
         layout: '=',
         types: '=panelTypes',
         changedImplementation: '&changed'

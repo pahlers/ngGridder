@@ -150,6 +150,7 @@ describe('Module: ngGridder', function () {
         $scope.layout = [];
         $scope.panelTypes = [];
         $scope.changed = function() {};
+        $scope.editable = true;
       });
 
       it('should add a row and tell that the model is changed', function() {
@@ -250,6 +251,7 @@ describe('Module: ngGridder', function () {
         $scope.layout = [];
         $scope.panelTypes = [];
         $scope.changed = function() {};
+        $scope.editable = true;
       });
 
       it('should add a row under the selected row and tell that the model is changed', function() {

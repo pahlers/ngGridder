@@ -39,7 +39,7 @@ angular.module('example', ['ngGridder', 'panel1', 'panel…'])
 * layout, layout of the grid, see Layout for structure;
 * panelTypes, all the types of panels you can want to choose from;
 * changed(), the callback function when the model is changed. It's better not to use the $watch function;
-* editable, true for read-write, false for read-only.
+* editable, global editable, true for read-write, false for read-only.
 
 ### Settings
 
