@@ -3,7 +3,7 @@
 describe('Module: ngGridder', function () {
   var $scope, $compile, $httpBackend, layout,
     render = function() {
-      var elm = $compile('<ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" editable="editable"></ng-gridder>')($scope);
+      var elm = $compile('<ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" lock-position="lockPosition"></ng-gridder>')($scope);
 
       $scope.$digest();
 
@@ -100,7 +100,7 @@ describe('Module: ngGridder', function () {
     $scope.layout = [];
     $scope.panelTypes = [];
     $scope.changed = function() {};
-    $scope.editable = true;
+    // $scope.lockPosition = true;
 
     var elm = render();
 
@@ -131,42 +131,42 @@ describe('Module: ngGridder', function () {
       expect(elm.find('.abc-settings').length).toBe(3);
     });
 
-    it('should enable navigation when editable is true', function () {
-      $scope.editable = true;
+    it('should enable navigation when lockPosition is false', function () {
+      $scope.lockPosition = false;
       elm = render();
-      expect(elm.find('.ng-gridder-nav').length).toBe(8);
+      expect(elm.find('.ng-gridder-nav-remove-row, .ng-gridder-nav-remove-col').length).toBe(7);
     });
 
-    it('should disable edit navigation when editable is false', function () {
-      $scope.editable = false;
+    it('should disable edit navigation when lockPosition is true', function () {
+      $scope.lockPosition = true;
       elm = render();
-      expect(elm.find('.ng-gridder-nav').length).toBe(0);
+      expect(elm.find('.ng-gridder-nav-remove-row, .ng-gridder-nav-remove-col').length).toBe(0);
     });
 
-    it('should overrule the global with row editable for row and col', function () {
-      $scope.editable = false;
-      $scope.layout[0].editable = true;
+    it('should overrule the global with row lockPosition for row and col', function () {
+      $scope.lockPosition = true;
+      $scope.layout[0].lockPosition = false;
 
       elm = render();
       
       var ngGridderRow = elm.find('.ng-gridder-row').first();
 
-      expect(ngGridderRow.find('.ng-gridder-nav-row').length).toBe(1);
-      expect(ngGridderRow.find('.ng-gridder-nav-col').length).toBe(4);
+      expect(ngGridderRow.find('.ng-gridder-nav-remove-row').length).toBe(1);
+      expect(ngGridderRow.find('.ng-gridder-nav-remove-col').length).toBe(4);
     });
 
-    it('should overrule the global and row with col editable', function () {
-      $scope.editable = true;
-      $scope.layout[0].editable = false;
-      $scope.layout[0].cols[0].editable = true;
-      $scope.layout[0].cols[1].editable = true;
+    it('should overrule the global and row with col lockPosition', function () {
+      $scope.lockPosition = false;
+      $scope.layout[0].lockPosition = true;
+      $scope.layout[0].cols[0].lockPosition = false;
+      $scope.layout[0].cols[1].lockPosition = false;
 
       elm = render();
       
       var ngGridderRow = elm.find('.ng-gridder-row').first();
 
-      expect(ngGridderRow.find('.ng-gridder-nav-row').length).toBe(0);
-      expect(ngGridderRow.find('.ng-gridder-nav-col').length).toBe(2);
+      expect(ngGridderRow.find('.ng-gridder-nav-remove-row').length).toBe(0);
+      expect(ngGridderRow.find('.ng-gridder-nav-remove-col').length).toBe(2);
     });
   });
 
@@ -176,7 +176,7 @@ describe('Module: ngGridder', function () {
         $scope.layout = [];
         $scope.panelTypes = [];
         $scope.changed = function() {};
-        $scope.editable = true;
+        $scope.lockPosition = true;
       });
 
       it('should add a row and tell that the model is changed', function() {
@@ -226,7 +226,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.upRow(1);
+        ngGridder.moveToUpRow(1);
 
         expect($scope.layout[0].cols.length).toBe(1);
         expect($scope.layout[1].cols.length).toBe(0);
@@ -240,7 +240,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.upRow(1);
+        ngGridder.moveToUpRow(1);
 
         expect($scope.changed).not.toHaveBeenCalled();
       });
@@ -252,7 +252,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.downRow(0);
+        ngGridder.moveToDownRow(0);
 
         expect($scope.layout[0].cols.length).toBe(0);
         expect($scope.layout[1].cols.length).toBe(1);
@@ -266,7 +266,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.downRow(0);
+        ngGridder.moveToDownRow(0);
 
         expect($scope.changed).not.toHaveBeenCalled();
       });
@@ -277,7 +277,7 @@ describe('Module: ngGridder', function () {
         $scope.layout = [];
         $scope.panelTypes = [];
         $scope.changed = function() {};
-        $scope.editable = true;
+        $scope.lockPosition = true;
       });
 
       it('should add a row under the selected row and tell that the model is changed', function() {
@@ -392,7 +392,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.leftCol(1);
+        ngGridderRow.moveToLeftCol(1);
 
         expect($scope.layout[0].cols.length).toBe(2);
         expect($scope.layout[0].cols[0].n).toBe(2);
@@ -408,7 +408,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.rightCol(0);
+        ngGridderRow.moveToRightCol(0);
 
         expect($scope.layout[0].cols.length).toBe(2);
         expect($scope.layout[0].cols[0].n).toBe(2);

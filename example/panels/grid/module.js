@@ -7,7 +7,7 @@ angular.module('subGrid', [])
       restrict: 'E',
       replace: true,
       scope: {
-        'options': '='
+        options: '='
       },
       controller: function($scope) {
         console.log('grid settings scope', $scope);
@@ -19,25 +19,27 @@ angular.module('subGrid', [])
     'use strict';
 
     return {
-      template: '<div class="sub-grid"><ng-gridder layout="options.layout" panel-types="options.panelTypes" changed="changed()" editable="options.editable"></ng-gridder></div>',
+      template: '<div class="sub-grid"><ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" lock-position="lockPosition"></ng-gridder></div>',
       restrict: 'E',
       replace: true,
       scope: {
-        'options': '=',
+        options: '=',
         changed: '&'
       },
       controller: function($scope) {
-        if(!$scope.options.layout){
-          $scope.options.layout = [];
+        $scope.layout = $scope.options.layout;
+        $scope.panelTypes = $scope.options.panelTypes;
+        $scope.lockPosition = $scope.options.lockPosition;
+
+        if(!$scope.layout){
+          $scope.layout = [];
         }
 
-        if(!$scope.options.panelTypes){
-          $scope.options.panelTypes = ['abc','def'];
+        if(!$scope.panelTypes){
+          $scope.panelTypes = ['abc','def'];
         }
 
-        if(!$scope.options.editable){
-          $scope.options.editable = true;
-        }
+
       }
     };
   });
