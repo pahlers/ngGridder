@@ -33,13 +33,13 @@ angular.module('example', ['ngGridder', 'panel1', 'panel…'])
 ### Directive
 
 ```html
-<ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" editable="editable"></ng-gridder>
+<ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" lock-position="lockPosition"></ng-gridder>
 ```
 
 * layout, layout of the grid, see Layout for structure;
 * panelTypes, all the types of panels you can want to choose from;
 * changed(), the callback function when the model is changed. It's better not to use the $watch function;
-* editable, global editable, true for read-write, false for read-only.
+* lock-position, global lockPosition, false for read-write, true for read-only.
 
 ### Settings
 
@@ -69,10 +69,10 @@ With ```ngGridderSettingsProvider``` you can change a few defaults.
 ```javascript
 $scope.layout = [
   { // A Row
-    editable: true, // true for read-write, false for read-only (overrules the global)
+    lockPosition: true, // false/undefined for read-write, true for read-only (overrules the global)
     cols: [
       { // A col (or panel)
-        editable: true, // true for read-write, false for read-only (overrules the global and row)
+        lockPosition: true, // false/undefined for read-write, true for read-only (overrules the global and row)
         type: '…', // Name of the panel directory
         width: { // Bootstrap grid system http://getbootstrap.com/css/#grid
           xs: 12, // Class prefix .col-xs-
