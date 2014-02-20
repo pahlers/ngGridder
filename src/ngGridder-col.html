@@ -1,10 +1,10 @@
 <div ng-class="{'ng-gridder-col-first': $first, 'ng-gridder-col-last': $last}" class="ng-gridder-col {{colClasses}}">
-  <div ng-if="colEditable" class="ng-gridder-nav ng-gridder-nav-col">
+  <div class="ng-gridder-nav ng-gridder-nav-col">
     <div class="btn-group">
       <button class="btn ng-gridder-nav-settings-col" ng-click="toggleSettings()"><span class="glyphicon glyphicon-cog"></span></button>
-      <button class="btn ng-gridder-nav-left-col" ng-click="left()" ng-if="!$first"><span class="glyphicon glyphicon-chevron-left"></span></button>
-      <button class="btn ng-gridder-nav-right-col" ng-click="right()" ng-if="!$last"><span class="glyphicon glyphicon-chevron-right"></span></button>
-      <button class="btn ng-gridder-nav-remove-col" ng-click="remove()"><span class="glyphicon glyphicon-minus"></span></button>
+      <button ng-if="!colLockPosition" class="btn ng-gridder-nav-left-col" ng-click="left()" ng-if="!$first"><span class="glyphicon glyphicon-chevron-left"></span></button>
+      <button ng-if="!colLockPosition" class="btn ng-gridder-nav-right-col" ng-click="right()" ng-if="!$last"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <button ng-if="!colLockPosition" class="btn ng-gridder-nav-remove-col" ng-click="remove()"><span class="glyphicon glyphicon-minus"></span></button>
     </div>
   </div>
 
@@ -21,28 +21,30 @@
   <div ng-if="col.type" ng-show="showSettings" class="ng-gridder-settings">
     <h1>Settings {{col.type}}</h1>
 
-    <div class="ng-gridder-settings-content"></div>
-
     <form role="form" name="settings" class="ng-gridder-settings-form">
-      <h2>width</h2>
-      <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-xs">
-        <label for="widthxs" class="ng-gridder-settings-form-label">xs</label>
-        <input type="number" id="widthxs" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.xs">
-      </div>
+      <div class="ng-gridder-settings-content"></div>
 
-      <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-sm">
-        <label for="widthsm" class="ng-gridder-settings-form-label">sm</label>
-        <input type="number" id="widthsm" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.sm">
-      </div>
+      <div ng-if="!colLockPosition" class="width-group">
+        <h2>width</h2>
+        <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-xs">
+          <label for="widthxs" class="ng-gridder-settings-form-label">xs</label>
+          <input type="number" id="widthxs" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.xs">
+        </div>
 
-      <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-md">
-        <label for="widthmd" class="ng-gridder-settings-form-label">md</label>
-        <input type="number" id="widthmd" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.md">
-      </div>
+        <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-sm">
+          <label for="widthsm" class="ng-gridder-settings-form-label">sm</label>
+          <input type="number" id="widthsm" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.sm">
+        </div>
 
-      <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-lg">
-        <label for="widthlg" class="ng-gridder-settings-form-label">lg</label>
-        <input type="number" id="widthlg" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.lg">
+        <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-md">
+          <label for="widthmd" class="ng-gridder-settings-form-label">md</label>
+          <input type="number" id="widthmd" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.md">
+        </div>
+
+        <div class="form-group ng-gridder-settings-form-width ng-gridder-settings-form-width-lg">
+          <label for="widthlg" class="ng-gridder-settings-form-label">lg</label>
+          <input type="number" id="widthlg" min="{{minWidth}}" max="{{maxWidth}}" class="form-control ng-gridder-settings-form-input" ng-model="col.width.lg">
+        </div>
       </div>
 
       <button class="btn btn-success" ng-click="save()">save</button>

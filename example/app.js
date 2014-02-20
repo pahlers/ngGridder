@@ -10,7 +10,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
       console.log('ExampleCtrl: something changed');
     };
 
-    $scope.editable = true;
+    $scope.lockPosition = true;
 
     $scope.panelTypes = [
       'grid',
@@ -33,7 +33,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
             },
             type: 'abc'
           }, {
-            editable: false,
+            lockPosition: false,
             settings: {},
             width: {
               xs: 12,
@@ -56,7 +56,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
           }
         ]
       }, {
-        editable: false,
+        lockPosition: false,
         cols: [
           {
             settings: {},
@@ -111,8 +111,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
                 }
               ],
               panelTypes:['abc','def'],
-              changed: $scope.changed,
-              editable: true
+              lockPosition: true
             },
             width: {
               xs: 12,
