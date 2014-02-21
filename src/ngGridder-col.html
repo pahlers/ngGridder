@@ -2,8 +2,8 @@
   <div class="ng-gridder-nav ng-gridder-nav-col">
     <div class="btn-group">
       <button class="btn ng-gridder-nav-settings-col" ng-click="toggleSettings()"><span class="glyphicon glyphicon-cog"></span></button>
-      <button ng-if="!colLockPosition" class="btn ng-gridder-nav-left-col" ng-click="left()" ng-if="!$first"><span class="glyphicon glyphicon-chevron-left"></span></button>
-      <button ng-if="!colLockPosition" class="btn ng-gridder-nav-right-col" ng-click="right()" ng-if="!$last"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <button ng-if="!(colLockPosition || $first)" class="btn ng-gridder-nav-left-col" ng-click="left()"><span class="glyphicon glyphicon-chevron-left"></span></button>
+      <button ng-if="!(colLockPosition || $last)" class="btn ng-gridder-nav-right-col" ng-click="right()"><span class="glyphicon glyphicon-chevron-right"></span></button>
       <button ng-if="!colLockPosition" class="btn ng-gridder-nav-remove-col" ng-click="remove()"><span class="glyphicon glyphicon-minus"></span></button>
     </div>
   </div>

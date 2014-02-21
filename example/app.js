@@ -124,6 +124,7 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
         ]
       },
       {
+        lockPosition: false,
         cols: [
           {
             settings: {
@@ -133,7 +134,31 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
               xs: 12,
               sm: 12,
               md: 12,
-              lg: 12
+              lg: 4
+            },
+            type: 'abc'
+          },
+          {
+            settings: {
+              title:  'Hello wideworld'
+            },
+            width: {
+              xs: 12,
+              sm: 12,
+              md: 12,
+              lg: 4
+            },
+            type: 'abc'
+          },
+          {
+            settings: {
+              title:  'Hello wideworld'
+            },
+            width: {
+              xs: 12,
+              sm: 12,
+              md: 12,
+              lg: 4
             },
             type: 'abc'
           }

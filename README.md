@@ -9,7 +9,9 @@ Download the [production version][min] or the [development version][max].
 [min]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/ngGridder.min.js
 [max]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/ngGridder.js
 
-And the *.html files in the [dist][https://github.com/eonlepapillon/ngGridder/blob/master/dist/]
+And the *.html files in the [dist map][dist]
+
+[dist]: https://github.com/eonlepapillon/ngGridder/blob/master/dist/
 
 Install ```jQuery```, ```Twitter bootstrap``` and ```Angular``` (duh!).
 
