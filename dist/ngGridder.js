@@ -1,6 +1,6 @@
 angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridderSettingsProvider() {
   'use strict';
-  var settings = {
+  var that = this, settings = {
       path: {
         panelDir: './views/panels/',
         panelHtml: '/panel.html',
@@ -16,19 +16,19 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
         maxWidth: 12
       }
     };
-  var get = this.get = function () {
-      return settings;
-    };
-  var set = this.set = function (newSettings) {
-      return jQuery.extend(true, settings, newSettings);  // why jQuery? If the first property is true, the merge becomes recursive (aka. deep copy).
-    };
+  this.get = function () {
+    return settings;
+  };
+  this.set = function (newSettings) {
+    return jQuery.extend(true, settings, newSettings);  // why jQuery? If the first property is true, the merge becomes recursive (aka. deep copy).
+  };
   this.$get = function ngGridderSettingsFactory() {
     return {
       get: function () {
-        return get();
+        return that.get();
       },
       set: function (newSettings) {
-        return set(newSettings);
+        return that.set(newSettings);
       }
     };
   };
@@ -36,8 +36,9 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
   '$http',
   '$templateCache',
   '$compile',
+  '$log',
   'ngGridderSettings',
-  function ($http, $templateCache, $compile, ngGridderSettings) {
+  function ($http, $templateCache, $compile, $log, ngGridderSettings) {
     'use strict';
     var gridderSettings = ngGridderSettings.get();
     return {
@@ -50,9 +51,9 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
           $scope.showSettings = false;
           $scope.minWidth = gridderSettings.panel.minWidth;
           $scope.maxWidth = gridderSettings.panel.maxWidth;
-          $scope.colEditable = $scope.rowEditable;
-          if ($scope.col.editable !== undefined) {
-            $scope.colEditable = $scope.col.editable;
+          $scope.colLockPosition = $scope.rowLockPosition;
+          if ($scope.col.lockPosition !== undefined) {
+            $scope.colLockPosition = $scope.col.lockPosition;
           }
           $scope.master = {
             settings: angular.copy($scope.col.settings),
@@ -67,20 +68,24 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
           $scope.toggleSettings = function () {
             $scope.showSettings = !$scope.showSettings;
           };
+          // remove the col
           $scope.remove = function () {
             $scope.removeCol($scope.$index);
           };
+          // add a new col
           $scope.add = function () {
             $scope.addCol($scope.$index + 1);
           };
+          // move the col to the left
           $scope.left = function () {
             if (!$scope.first) {
-              $scope.leftCol($scope.$index);
+              $scope.moveToLeftCol($scope.$index);
             }
           };
+          // move the col to the right
           $scope.right = function () {
             if (!$scope.last) {
-              $scope.rightCol($scope.$index);
+              $scope.moveToRightCol($scope.$index);
             }
           };
           // to save the settings/width of a panel
@@ -99,9 +104,9 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
       link: function (scope, element) {
         scope.$watch('col.type', function () {
           // get template and render
-          console.log('ngGridder: start loading', scope.col.type);
+          $log.log('ngGridder: start loading', scope.col.type);
           if (scope.col.type) {
-            var panelScope = scope.$new(), path = gridderSettings.path, panelUrl = path.panelDir + scope.col.type + path.panelHtml, settingsUrl = path.panelDir + scope.col.type + path.settingsHtml, loadPanel = function (target, panel, panelScope) {
+            var panelScope = scope.$new(), path = gridderSettings.path, panelUrl = path.panelDir + scope.col.type + path.panelHtml, settingsUrl = path.panelDir + scope.col.type + path.settingsHtml, compilePanel = function (target, panel, panelScope) {
                 var panelElement = $compile(panel)(panelScope);
                 panelScope.$on('$destroy', function () {
                   panelElement.unbind();
@@ -112,41 +117,41 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             if (scope.col.settings) {
               panelScope.settings = scope.col.settings;
             }
-            // get the panel.html
             if (!$templateCache.get(panelUrl)) {
-              console.log('ngGridder: load panel from url', panelUrl);
+              $log.log('ngGridder: load panel from url', panelUrl);
               $http.get(panelUrl).success(function (data) {
-                loadPanel('.ng-gridder-panel-content', $templateCache.put(panelUrl, data), panelScope);
+                compilePanel('.ng-gridder-panel-content', $templateCache.put(panelUrl, data), panelScope);
               }).error(function () {
-                console.error('ngGridder: error, can\'t find panel template:', panelUrl);
+                $log.error('ngGridder: error, can\'t find panel template:', panelUrl);
               });
             } else {
-              console.log('ngGridder: load panel from cache', panelUrl);
-              loadPanel('.ng-gridder-panel-content', $templateCache.get(panelUrl), panelScope);
+              $log.log('ngGridder: load panel from cache', panelUrl);
+              compilePanel('.ng-gridder-panel-content', $templateCache.get(panelUrl), panelScope);
             }
             //get the settings.html
             if (!$templateCache.get(settingsUrl)) {
-              console.log('ngGridder: load settings from url', settingsUrl);
+              $log.log('ngGridder: load settings from url', settingsUrl);
               $http.get(settingsUrl).success(function (data) {
-                loadPanel('.ng-gridder-settings-content', $templateCache.put(settingsUrl, data), panelScope);
+                compilePanel('.ng-gridder-settings-content', $templateCache.put(settingsUrl, data), panelScope);
               }).error(function () {
-                console.error('ngGridder: error, can\'t find settings template:', settingsUrl);
+                $log.error('ngGridder: error, can\'t find settings template:', settingsUrl);
               });
             } else {
-              console.log('ngGridder: load settings from cache', settingsUrl);
-              loadPanel('.ng-gridder-settings-content', $templateCache.get(settingsUrl), panelScope);
+              $log.log('ngGridder: load settings from cache', settingsUrl);
+              compilePanel('.ng-gridder-settings-content', $templateCache.get(settingsUrl), panelScope);
             }
           } else {
             scope.showSettings = true;
-            console.log('ngGridder: added new panel');
+            $log.log('ngGridder: added new panel');
           }
         });
       }
     };
   }
 ]).directive('ngGridderRow', [
+  '$log',
   'ngGridderSettings',
-  function (ngGridderSettings) {
+  function ($log, ngGridderSettings) {
     'use strict';
     var gridderSettings = ngGridderSettings.get();
     return {
@@ -156,26 +161,31 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
       controller: [
         '$scope',
         function ($scope) {
+          var that = this;
           $scope.name = $scope.row.name;
           $scope.cols = $scope.row.cols;
-          $scope.rowEditable = $scope.globalEditable;
-          if ($scope.row.editable !== undefined) {
-            $scope.rowEditable = $scope.row.editable;
+          $scope.rowLockPosition = $scope.globalLockPosition;
+          if ($scope.row.lockPosition !== undefined) {
+            $scope.rowLockPosition = $scope.row.lockPosition;
           }
+          // remove the row
           $scope.remove = function () {
             $scope.removeRow($scope.$index);
           };
+          // add a new row
           $scope.add = function () {
             $scope.addRow($scope.$index + 1);
           };
+          // move the row up
           $scope.up = function () {
             if (!$scope.$first) {
-              $scope.upRow($scope.$index);
+              $scope.moveToUpRow($scope.$index);
             }
           };
+          // move the row down
           $scope.down = function () {
             if (!$scope.last) {
-              $scope.downRow($scope.$index);
+              $scope.moveToDownRow($scope.$index);
             }
           };
           $scope.removeCol = function (colIndex) {
@@ -184,7 +194,7 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             }
             $scope.cols.splice(colIndex, 1);
             $scope.changed();
-            console.log('ngGridder: remove col', colIndex);
+            $log.log('ngGridder: remove col', colIndex);
           };
           $scope.addCol = function (colIndex) {
             if (!angular.isNumber(colIndex)) {
@@ -200,27 +210,23 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
               }
             });
             $scope.changed();
-            console.log('ngGridder: add col');
+            $log.log('ngGridder: add col');
           };
-          $scope.leftCol = function (colIndex) {
+          this.moveTo = function (colIndex, direction) {
             if ($scope.cols.length <= 1) {
               return;
             }
             // pull col out of row
             var col = $scope.cols.splice(colIndex, 1);
             // add col to row
-            $scope.cols.splice(colIndex - 1, 0, col[0]);
+            $scope.cols.splice(colIndex + direction, 0, col[0]);
             $scope.changed();
           };
-          $scope.rightCol = function (colIndex) {
-            if ($scope.cols.length <= 1) {
-              return;
-            }
-            // pull col out of row
-            var col = $scope.cols.splice(colIndex, 1);
-            // add col to row
-            $scope.cols.splice(colIndex + 1, 0, col[0]);
-            $scope.changed();
+          $scope.moveToLeftCol = function (colIndex) {
+            that.moveTo(colIndex, -1);
+          };
+          $scope.moveToRightCol = function (colIndex) {
+            that.moveTo(colIndex, 1);
           };
           $scope.saveColSettings = function () {
             $scope.changed();
@@ -230,8 +236,9 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
     };
   }
 ]).directive('ngGridder', [
+  '$log',
   'ngGridderSettings',
-  function (ngGridderSettings) {
+  function ($log, ngGridderSettings) {
     'use strict';
     var gridderSettings = ngGridderSettings.get();
     return {
@@ -239,7 +246,7 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
       restrict: 'E',
       replace: true,
       scope: {
-        globalEditable: '=editable',
+        globalLockPosition: '=lockPosition',
         layout: '=',
         types: '=panelTypes',
         changedImplementation: '&changed'
@@ -247,13 +254,14 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
       controller: [
         '$scope',
         function ($scope) {
+          var that = this;
           if (!angular.isArray($scope.layout)) {
-            console.error('ngGridder: need an (empty) layout');
+            $log.error('ngGridder: need an (empty) layout');
             return;
           }
           $scope.changed = function () {
             $scope.changedImplementation();
-            console.log('ngGridder: layout changed');
+            $log.log('ngGridder: layout changed');
           };
           $scope.removeRow = function (rowIndex) {
             if (!angular.isNumber(rowIndex)) {
@@ -261,7 +269,7 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             }
             $scope.layout.splice(rowIndex, 1);
             $scope.changed();
-            console.log('ngGridder: remove row', rowIndex);
+            $log.log('ngGridder: remove row', rowIndex);
           };
           $scope.addRow = function (rowIndex) {
             if (!angular.isNumber(rowIndex)) {
@@ -269,29 +277,25 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             }
             $scope.layout.splice(rowIndex, 0, { cols: [] });
             $scope.changed();
-            console.log('ngGridder: add row', rowIndex);
+            $log.log('ngGridder: add row', rowIndex);
           };
-          $scope.upRow = function (rowIndex) {
+          this.moveTo = function (rowIndex, direction) {
             if (!angular.isNumber(rowIndex) || $scope.layout.length <= 1) {
               return;
             }
             // pull row out of layout
             var row = $scope.layout.splice(rowIndex, 1);
             // add row to layout
-            $scope.layout.splice(rowIndex - 1, 0, row[0]);
+            $scope.layout.splice(rowIndex + direction, 0, row[0]);
             $scope.changed();
-            console.log('ngGridder: moved a row up', rowIndex);
           };
-          $scope.downRow = function (rowIndex) {
-            if (!angular.isNumber(rowIndex) || $scope.layout.length <= 1) {
-              return;
-            }
-            // pull row out of layout
-            var row = $scope.layout.splice(rowIndex, 1);
-            // add row to layout
-            $scope.layout.splice(rowIndex + 1, 0, row[0]);
-            $scope.changed();
-            console.log('ngGridder: moved a row down', rowIndex);
+          $scope.moveToUpRow = function (rowIndex) {
+            that.moveTo(rowIndex, -1);
+            $log.log('ngGridder: moved a row up', rowIndex);
+          };
+          $scope.moveToDownRow = function (rowIndex) {
+            that.moveTo(rowIndex, 1);
+            $log.log('ngGridder: moved a row down', rowIndex);
           };
         }
       ]
