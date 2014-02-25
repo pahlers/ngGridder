@@ -1,4 +1,4 @@
-# ngGridder
+  # ngGridder
 
 Combine AngularJS and Twitter Bootstrap grid system into an editable grid (codename laughing-meme). Every grid panel loads a directive for settings and the content. Did you know you can nest ngGridder in ngGridder? See the example.
 
@@ -38,10 +38,10 @@ angular.module('example', ['ngGridder', 'panel1', 'panel…'])
 <ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" lock-position="lockPosition"></ng-gridder>
 ```
 
-* layout, layout of the grid, see Layout for structure;
-* panelTypes, all the types of panels you can want to choose from;
-* changed(), the callback function when the model is changed. It's better not to use the $watch function;
-* lock-position, global lockPosition, false for read-write, true for read-only.
+* ```layout```, layout of the grid, see Layout for structure;
+* ```panelTypes```, all the types of panels you can want to choose from;
+* ```changed```, the callback function when the model is changed. It's better not to use the $watch function;
+* ```operations```, global operations.
 
 ### Settings
 
@@ -90,6 +90,26 @@ $scope.layout = [
   },
   …
 ];
+```
+
+### Operations
+
+There are operations in three levels, globale, row and col (panel). The row overruled global, the col overruled de row and global.
+See the example for more options.
+```javascript
+$scope.operations = {
+      row:{
+        add: false, // let the user add more rows
+        remove: false, // let the user remove rows
+        position: true // up en down, let the user change the position of a row
+      },
+      col:{
+        add: false, // let the user add more cols
+        remove: false, // let the user remove cols
+        position: false, // left en right, let the user change the position of a col
+        settings: false // let the user change settings
+      }
+    };
 ```
 
 ### Panels

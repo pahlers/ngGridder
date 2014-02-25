@@ -14,12 +14,12 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
       row:{
         add: false,
         remove: false,
-        position: false // up en down
+        position: true // up en down
       },
       col:{
         add: false,
         remove: false,
-        position: false, // left en right
+        position: true, // left en right
         settings: false
       }
     };
@@ -32,6 +32,16 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
 
     $scope.panels = [
       {
+        operations: {
+          row:{
+            position: false
+          },
+          col:{
+            add: true,
+            remove: true,
+            position: true // left en right
+          }
+        },
         cols: [
           {
             settings: {
@@ -133,7 +143,6 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
         ]
       },
       {
-        lockPosition: false,
         cols: [
           {
             settings: {

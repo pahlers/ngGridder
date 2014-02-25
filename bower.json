@@ -1,6 +1,6 @@
 {
   "name": "ngGridder",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "main": [
     "dist/ngGridder.js",
     "dist/ngGridder.html",
