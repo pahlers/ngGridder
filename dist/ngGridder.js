@@ -51,9 +51,9 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
           $scope.showSettings = false;
           $scope.minWidth = gridderSettings.panel.minWidth;
           $scope.maxWidth = gridderSettings.panel.maxWidth;
-          $scope.colLockPosition = $scope.rowLockPosition;
-          if ($scope.col.lockPosition !== undefined) {
-            $scope.colLockPosition = $scope.col.lockPosition;
+          $scope.colOperations = $scope.rowOperations.col;
+          if ($scope.col.operations !== undefined) {
+            $scope.colOperations = jQuery.extend(true, {}, $scope.rowOperations.col, $scope.col.operations);
           }
           $scope.master = {
             settings: angular.copy($scope.col.settings),
@@ -70,30 +70,36 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
           };
           // remove the col
           $scope.remove = function () {
-            $scope.removeCol($scope.$index);
+            if ($scope.colOperations.remove === true) {
+              $scope._removeCol($scope.$index);
+            }
           };
           // add a new col
           $scope.add = function () {
-            $scope.addCol($scope.$index + 1);
+            if ($scope.colOperations.add === true) {
+              $scope._addCol($scope.$index + 1);
+            }
           };
           // move the col to the left
           $scope.left = function () {
-            if (!$scope.first) {
-              $scope.moveToLeftCol($scope.$index);
+            if ($scope.colOperations.position === true && !$scope.first) {
+              $scope._moveToLeftCol($scope.$index);
             }
           };
           // move the col to the right
           $scope.right = function () {
-            if (!$scope.last) {
-              $scope.moveToRightCol($scope.$index);
+            if ($scope.colOperations.position === true && !$scope.last) {
+              $scope._moveToRightCol($scope.$index);
             }
           };
           // to save the settings/width of a panel
           $scope.save = function () {
-            $scope.master.settings = angular.copy($scope.col.settings);
-            $scope.master.width = angular.copy($scope.col.width);
-            $scope.showSettings = false;
-            $scope.saveColSettings();
+            if ($scope.colOperations.settings === true) {
+              $scope.master.settings = angular.copy($scope.col.settings);
+              $scope.master.width = angular.copy($scope.col.width);
+              $scope.showSettings = false;
+              $scope._saveColSettings();
+            }
           };
           $scope.cancel = function () {
             $scope.col.settings = angular.copy($scope.master.settings);
@@ -164,39 +170,43 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
           var that = this;
           $scope.name = $scope.row.name;
           $scope.cols = $scope.row.cols;
-          $scope.rowLockPosition = $scope.globalLockPosition;
-          if ($scope.row.lockPosition !== undefined) {
-            $scope.rowLockPosition = $scope.row.lockPosition;
+          $scope.rowOperations = $scope.globalOperations;
+          if ($scope.row.operations !== undefined) {
+            $scope.rowOperations = jQuery.extend(true, {}, $scope.globalOperations, $scope.row.operations);
           }
           // remove the row
           $scope.remove = function () {
-            $scope.removeRow($scope.$index);
+            if ($scope.rowOperations.row.remove === true) {
+              $scope._removeRow($scope.$index);
+            }
           };
           // add a new row
           $scope.add = function () {
-            $scope.addRow($scope.$index + 1);
+            if ($scope.rowOperations.row.add === true) {
+              $scope._addRow($scope.$index + 1);
+            }
           };
           // move the row up
           $scope.up = function () {
-            if (!$scope.$first) {
-              $scope.moveToUpRow($scope.$index);
+            if ($scope.rowOperations.row.position === true && !$scope.$first) {
+              $scope._moveToUpRow($scope.$index);
             }
           };
           // move the row down
           $scope.down = function () {
-            if (!$scope.last) {
-              $scope.moveToDownRow($scope.$index);
+            if ($scope.rowOperations.row.position === true && !$scope.last) {
+              $scope._moveToDownRow($scope.$index);
             }
           };
-          $scope.removeCol = function (colIndex) {
+          $scope._removeCol = function (colIndex) {
             if (!angular.isNumber(colIndex)) {
               return;
             }
             $scope.cols.splice(colIndex, 1);
-            $scope.changed();
+            $scope._changed();
             $log.log('ngGridder: remove col', colIndex);
           };
-          $scope.addCol = function (colIndex) {
+          $scope._addCol = function (colIndex) {
             if (!angular.isNumber(colIndex)) {
               colIndex = $scope.cols.length;
             }
@@ -209,10 +219,10 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
                 lg: 3
               }
             });
-            $scope.changed();
+            $scope._changed();
             $log.log('ngGridder: add col');
           };
-          this.moveTo = function (colIndex, direction) {
+          this._moveTo = function (colIndex, direction) {
             if ($scope.cols.length <= 1) {
               return;
             }
@@ -220,16 +230,16 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             var col = $scope.cols.splice(colIndex, 1);
             // add col to row
             $scope.cols.splice(colIndex + direction, 0, col[0]);
-            $scope.changed();
+            $scope._changed();
           };
-          $scope.moveToLeftCol = function (colIndex) {
-            that.moveTo(colIndex, -1);
+          $scope._moveToLeftCol = function (colIndex) {
+            that._moveTo(colIndex, -1);
           };
-          $scope.moveToRightCol = function (colIndex) {
-            that.moveTo(colIndex, 1);
+          $scope._moveToRightCol = function (colIndex) {
+            that._moveTo(colIndex, 1);
           };
-          $scope.saveColSettings = function () {
-            $scope.changed();
+          $scope._saveColSettings = function () {
+            $scope._changed();
           };
         }
       ]
@@ -246,7 +256,7 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
       restrict: 'E',
       replace: true,
       scope: {
-        globalLockPosition: '=lockPosition',
+        globalOperations: '=operations',
         layout: '=',
         types: '=panelTypes',
         changedImplementation: '&changed'
@@ -254,32 +264,47 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
       controller: [
         '$scope',
         function ($scope) {
-          var that = this;
+          var that = this, defaultOperations = {
+              row: {
+                add: true,
+                remove: true,
+                position: true,
+                settings: true
+              },
+              col: {
+                add: true,
+                remove: true,
+                position: true,
+                settings: true
+              }
+            };
+          // overrule defaults with the given operations aand save these in globalOperations
+          $scope.globalOperations = jQuery.extend(true, {}, defaultOperations, $scope.globalOperations);
           if (!angular.isArray($scope.layout)) {
             $log.error('ngGridder: need an (empty) layout');
             return;
           }
-          $scope.changed = function () {
+          $scope._changed = function () {
             $scope.changedImplementation();
             $log.log('ngGridder: layout changed');
           };
-          $scope.removeRow = function (rowIndex) {
+          $scope._removeRow = function (rowIndex) {
             if (!angular.isNumber(rowIndex)) {
               return;
             }
             $scope.layout.splice(rowIndex, 1);
-            $scope.changed();
+            $scope._changed();
             $log.log('ngGridder: remove row', rowIndex);
           };
-          $scope.addRow = function (rowIndex) {
+          $scope._addRow = function (rowIndex) {
             if (!angular.isNumber(rowIndex)) {
               rowIndex = $scope.layout.length;
             }
             $scope.layout.splice(rowIndex, 0, { cols: [] });
-            $scope.changed();
+            $scope._changed();
             $log.log('ngGridder: add row', rowIndex);
           };
-          this.moveTo = function (rowIndex, direction) {
+          this._moveTo = function (rowIndex, direction) {
             if (!angular.isNumber(rowIndex) || $scope.layout.length <= 1) {
               return;
             }
@@ -287,14 +312,14 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             var row = $scope.layout.splice(rowIndex, 1);
             // add row to layout
             $scope.layout.splice(rowIndex + direction, 0, row[0]);
-            $scope.changed();
+            $scope._changed();
           };
-          $scope.moveToUpRow = function (rowIndex) {
-            that.moveTo(rowIndex, -1);
+          $scope._moveToUpRow = function (rowIndex) {
+            that._moveTo(rowIndex, -1);
             $log.log('ngGridder: moved a row up', rowIndex);
           };
-          $scope.moveToDownRow = function (rowIndex) {
-            that.moveTo(rowIndex, 1);
+          $scope._moveToDownRow = function (rowIndex) {
+            that._moveTo(rowIndex, 1);
             $log.log('ngGridder: moved a row down', rowIndex);
           };
         }
