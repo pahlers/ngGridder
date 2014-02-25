@@ -5,12 +5,24 @@
 *
 */
 angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
-  .controller('ExampleCtrl', function($scope) {
+  .controller('ExampleCtrl', function($scope, $log) {
     $scope.changed = function() {
-      console.log('ExampleCtrl: something changed');
+      $log.log('ExampleCtrl: something changed');
     };
 
-    $scope.lockPosition = true;
+    $scope.operations = {
+      row:{
+        add: false,
+        remove: false,
+        position: false // up en down
+      },
+      col:{
+        add: false,
+        remove: false,
+        position: false, // left en right
+        settings: false
+      }
+    };
 
     $scope.panelTypes = [
       'grid',
@@ -33,7 +45,6 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
             },
             type: 'abc'
           }, {
-            lockPosition: false,
             settings: {},
             width: {
               xs: 12,
@@ -56,7 +67,6 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
           }
         ]
       }, {
-        lockPosition: false,
         cols: [
           {
             settings: {},
@@ -111,7 +121,6 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
                 }
               ],
               panelTypes:['abc','def'],
-              lockPosition: true
             },
             width: {
               xs: 12,

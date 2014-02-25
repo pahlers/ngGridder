@@ -55,11 +55,10 @@ angular.module('ngGridder', [])
 
           $scope.minWidth = gridderSettings.panel.minWidth;
           $scope.maxWidth = gridderSettings.panel.maxWidth;
+          $scope.colOperations = $scope.rowOperations.col;
 
-          $scope.colLockPosition = $scope.rowLockPosition;
-
-          if($scope.col.lockPosition !== undefined){
-            $scope.colLockPosition = $scope.col.lockPosition;
+          if($scope.col.operations !== undefined){
+            $scope.colOperations = jQuery.extend(true, {}, $scope.rowOperations.col, $scope.col.operations);
           }
 
           $scope.master = {
@@ -199,10 +198,10 @@ angular.module('ngGridder', [])
 
           $scope.name = $scope.row.name;
           $scope.cols = $scope.row.cols;
-          $scope.rowLockPosition = $scope.globalLockPosition;
+          $scope.rowOperations = $scope.globalOperations;
 
-          if($scope.row.lockPosition !== undefined){
-            $scope.rowLockPosition = $scope.row.lockPosition;
+          if($scope.row.operations !== undefined){
+            $scope.rowOperations = jQuery.extend(true, {}, $scope.globalOperations, $scope.row.operations);
           }
 
           // remove the row
@@ -301,13 +300,30 @@ angular.module('ngGridder', [])
         restrict: 'E',
         replace: true,
         scope: {
-          globalLockPosition: '=lockPosition',
+          globalOperations: '=operations',
           layout: '=',
           types: '=panelTypes',
           changedImplementation: '&changed'
         },
         controller: function($scope) {
-          var that = this;
+          var that = this,
+            defaultOperations = {
+              row:{
+                add: true,
+                remove: true,
+                position: true, // up en down
+                settings: true
+              },
+              col:{
+                add: true,
+                remove: true,
+                position: true, // left en right
+                settings: true
+              }
+            };
+
+          // overrule defaults with the given operations aand save these in globalOperations
+          $scope.globalOperations = jQuery.extend(true, {}, defaultOperations, $scope.globalOperations);
 
           if(!angular.isArray($scope.layout)){
             $log.error('ngGridder: need an (empty) layout');

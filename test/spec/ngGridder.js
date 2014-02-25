@@ -3,7 +3,7 @@
 describe('Module: ngGridder', function () {
   var $scope, $compile, $httpBackend, layout,
     render = function() {
-      var elm = $compile('<ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" lock-position="lockPosition"></ng-gridder>')($scope);
+      var elm = $compile('<ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" operations="operations"></ng-gridder>')($scope);
 
       $scope.$digest();
 
@@ -100,7 +100,7 @@ describe('Module: ngGridder', function () {
     $scope.layout = [];
     $scope.panelTypes = [];
     $scope.changed = function() {};
-    // $scope.lockPosition = true;
+    $scope.operations = {};
 
     var elm = render();
 
@@ -131,21 +131,58 @@ describe('Module: ngGridder', function () {
       expect(elm.find('.abc-settings').length).toBe(3);
     });
 
-    it('should enable navigation when lockPosition is false', function () {
-      $scope.lockPosition = false;
+    it('should enable navigation when operations is an empty object', function () {
+      $scope.operations = {};
       elm = render();
       expect(elm.find('.ng-gridder-nav-remove-row, .ng-gridder-nav-remove-col').length).toBe(7);
     });
 
-    it('should disable edit navigation when lockPosition is true', function () {
-      $scope.lockPosition = true;
+    it('should disable edit navigation when operations set everything false', function () {
+      $scope.operations = {
+        row:{
+          add: false,
+          remove: false,
+          position: false // up en down
+        },
+        col:{
+          add: false,
+          remove: false,
+          position: false, // left en right
+          settings: false
+        }
+      };
+
       elm = render();
       expect(elm.find('.ng-gridder-nav-remove-row, .ng-gridder-nav-remove-col').length).toBe(0);
     });
 
-    it('should overrule the global with row lockPosition for row and col', function () {
-      $scope.lockPosition = true;
-      $scope.layout[0].lockPosition = false;
+    it('should overrule the global with row operations for row and col', function () {
+      $scope.operations = {
+        row:{
+          add: false,
+          remove: false,
+          position: false // up en down
+        },
+        col:{
+          add: false,
+          remove: false,
+          position: false, // left en right
+          settings: false
+        }
+      };
+      $scope.layout[0].operations = {
+        row:{
+          add: true,
+          remove: true,
+          position: true // up en down
+        },
+        col:{
+          add: true,
+          remove: true,
+          position: true, // left en right
+          settings: true
+        }
+      };
 
       elm = render();
       
@@ -155,11 +192,33 @@ describe('Module: ngGridder', function () {
       expect(ngGridderRow.find('.ng-gridder-nav-remove-col').length).toBe(4);
     });
 
-    it('should overrule the global and row with col lockPosition', function () {
-      $scope.lockPosition = false;
-      $scope.layout[0].lockPosition = true;
-      $scope.layout[0].cols[0].lockPosition = false;
-      $scope.layout[0].cols[1].lockPosition = false;
+    it('should overrule the global and row with col operations', function () {
+      $scope.operations = {};
+      $scope.layout[0].operations = {
+        row:{
+          add: false,
+          remove: false,
+          position: false // up en down
+        },
+        col:{
+          add: false,
+          remove: false,
+          position: false, // left en right
+          settings: false
+        }
+      };
+      $scope.layout[0].cols[0].operations = {
+        add: true,
+        remove: true,
+        position: true, // left en right
+        settings: true
+      };
+      $scope.layout[0].cols[1].operations = {
+        add: true,
+        remove: true,
+        position: true, // left en right
+        settings: true
+      };
 
       elm = render();
       
@@ -176,7 +235,7 @@ describe('Module: ngGridder', function () {
         $scope.layout = [];
         $scope.panelTypes = [];
         $scope.changed = function() {};
-        $scope.lockPosition = true;
+        $scope.operations = {};
       });
 
       it('should add a row and tell that the model is changed', function() {
@@ -277,7 +336,7 @@ describe('Module: ngGridder', function () {
         $scope.layout = [];
         $scope.panelTypes = [];
         $scope.changed = function() {};
-        $scope.lockPosition = true;
+        $scope.operations = {};
       });
 
       it('should add a row under the selected row and tell that the model is changed', function() {
