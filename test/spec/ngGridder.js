@@ -227,6 +227,41 @@ describe('Module: ngGridder', function () {
       expect(ngGridderRow.find('.ng-gridder-nav-remove-row').length).toBe(0);
       expect(ngGridderRow.find('.ng-gridder-nav-remove-col').length).toBe(2);
     });
+
+    it('should not show the move up button on the top row', function () {
+      elm = render();
+
+      var firstNgGridderRow = elm.find('.ng-gridder-row').first();
+      expect(firstNgGridderRow.find('.ng-gridder-nav-up-row').length).toBe(0);
+
+      var secondNgGridderRow = elm.find('.ng-gridder-row').eq(1);
+      expect(secondNgGridderRow.find('.ng-gridder-nav-up-row').length).toBe(1);
+    });
+
+    it('should not show the move down button on the bottom row', function () {
+      elm = render();
+
+      var lastNgGridderRow = elm.find('.ng-gridder-row').last();
+      expect(lastNgGridderRow.find('.ng-gridder-nav-down-row').length).toBe(0);
+    });
+
+    it('should not show the move left button on the first column', function () {
+      elm = render();
+
+      var ngGridderCol = elm.find('.ng-gridder-row').first().find('.ng-gridder-col').first();
+      expect(ngGridderCol.find('.ng-gridder-nav-left-col').length).toBe(0);
+
+      var ngGridderCol2 = elm.find('.ng-gridder-row').first().find('.ng-gridder-col').eq(1);
+      expect(ngGridderCol2.find('.ng-gridder-nav-left-col').length).toBe(1);
+    });
+
+    it('should not show the move right button on the last column', function () {
+      elm = render();
+
+      var ngGridderCol = elm.find('.ng-gridder-row').first().find('.ng-gridder-col').last();
+      expect(ngGridderCol.find('.ng-gridder-nav-right-col').length).toBe(0);
+    });
+
   });
 
   describe('it\'s controller', function() {
