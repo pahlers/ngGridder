@@ -244,7 +244,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.addRow();
+        ngGridder._addRow();
 
         expect($scope.layout.length).toBe(1);
         expect($scope.changed).toHaveBeenCalled();
@@ -257,7 +257,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.addRow(1);
+        ngGridder._addRow(1);
 
         expect($scope.layout.length).toBe(2);
         expect($scope.layout[0].cols.length).toBe(1);
@@ -272,7 +272,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.removeRow(1);
+        ngGridder._removeRow(1);
 
         expect($scope.layout.length).toBe(1);
         expect($scope.changed).toHaveBeenCalled();
@@ -285,7 +285,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.moveToUpRow(1);
+        ngGridder._moveToUpRow(1);
 
         expect($scope.layout[0].cols.length).toBe(1);
         expect($scope.layout[1].cols.length).toBe(0);
@@ -299,7 +299,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.moveToUpRow(1);
+        ngGridder._moveToUpRow(1);
 
         expect($scope.changed).not.toHaveBeenCalled();
       });
@@ -311,7 +311,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.moveToDownRow(0);
+        ngGridder._moveToDownRow(0);
 
         expect($scope.layout[0].cols.length).toBe(0);
         expect($scope.layout[1].cols.length).toBe(1);
@@ -325,7 +325,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridder = elm.isolateScope();
 
-        ngGridder.moveToDownRow(0);
+        ngGridder._moveToDownRow(0);
 
         expect($scope.changed).not.toHaveBeenCalled();
       });
@@ -403,7 +403,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.removeCol(1);
+        ngGridderRow._removeCol(1);
 
         expect($scope.layout[0].cols.length).toBe(2);
         expect($scope.changed).toHaveBeenCalled();
@@ -417,7 +417,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.addCol();
+        ngGridderRow._addCol();
 
         expect($scope.layout[0].cols.length).toBe(3);
         expect($scope.layout[0].cols[0].n).toBe(1);
@@ -434,7 +434,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.addCol(1);
+        ngGridderRow._addCol(1);
 
         expect($scope.layout[0].cols.length).toBe(3);
         expect($scope.layout[0].cols[0].n).toBe(1);
@@ -451,7 +451,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.moveToLeftCol(1);
+        ngGridderRow._moveToLeftCol(1);
 
         expect($scope.layout[0].cols.length).toBe(2);
         expect($scope.layout[0].cols[0].n).toBe(2);
@@ -467,7 +467,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.moveToRightCol(0);
+        ngGridderRow._moveToRightCol(0);
 
         expect($scope.layout[0].cols.length).toBe(2);
         expect($scope.layout[0].cols[0].n).toBe(2);
@@ -483,7 +483,7 @@ describe('Module: ngGridder', function () {
         var elm = render(),
           ngGridderRow = elm.find('.ng-gridder-row').scope();
 
-        ngGridderRow.saveColSettings();
+        ngGridderRow._saveColSettings();
 
         expect($scope.changed).toHaveBeenCalled();
       });
