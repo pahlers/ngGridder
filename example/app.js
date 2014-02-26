@@ -181,6 +181,20 @@ angular.module('example', ['ngGridder', 'abcExample', 'defExample','subGrid'])
             type: 'abc'
           }
         ]
+      },
+      {
+        operations: {
+          row:{
+            position: false
+          },
+          col:{
+            add: true,
+            remove: true,
+            position: false, // left en right
+            settings: false
+          }
+        },
+        cols: []
       }
     ];
 

@@ -3,7 +3,7 @@ angular.module('subGrid', [])
     'use strict';
 
     return {
-      template: '<div class="subgrid"><label>title <input type="text" ng-model="options.title"/></label><p>{{options.title}}</p></div>',
+      template: '<div class="subgrid"><h1>Settings Grid</h1><label>title <input type="text" ng-model="options.title"/></label><p>{{options.title}}</p></div>',
       restrict: 'E',
       replace: true,
       scope: {
@@ -19,7 +19,7 @@ angular.module('subGrid', [])
     'use strict';
 
     return {
-      template: '<div class="sub-grid"><ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" operations="operations"></ng-gridder></div>',
+      template: '<div class="sub-grid"><h1>Grid</h1><ng-gridder layout="layout" panel-types="panelTypes" changed="changed()" operations="operations"></ng-gridder></div>',
       restrict: 'E',
       replace: true,
       scope: {

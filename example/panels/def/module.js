@@ -3,7 +3,7 @@ angular.module('defExample', [])
     'use strict';
 
     return {
-      template: '<div lass="def def-settings"><label>title <input type="text" ng-model="options.title"/></label><p>{{options.title}}</p></div>',
+      template: '<div lass="def def-settings"><h1>Settings Def</h1><label>title <input type="text" ng-model="options.title"/></label><p>{{options.title}}</p></div>',
       restrict: 'E',
       replace: true,
       scope: {
@@ -19,7 +19,7 @@ angular.module('defExample', [])
     'use strict';
 
     return {
-      template: '<div lass="def">{{options.title}}</div>',
+      template: '<div class="def"><h1>Def</h1>{{options.title}}</div>',
       restrict: 'E',
       replace: true,
       scope: {

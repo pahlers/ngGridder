@@ -134,17 +134,21 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
               $log.log('ngGridder: load panel from cache', panelUrl);
               compilePanel('.ng-gridder-panel-content', $templateCache.get(panelUrl), panelScope);
             }
-            //get the settings.html
-            if (!$templateCache.get(settingsUrl)) {
-              $log.log('ngGridder: load settings from url', settingsUrl);
-              $http.get(settingsUrl).success(function (data) {
-                compilePanel('.ng-gridder-settings-content', $templateCache.put(settingsUrl, data), panelScope);
-              }).error(function () {
-                $log.error('ngGridder: error, can\'t find settings template:', settingsUrl);
-              });
+            if (scope.colOperations.settings) {
+              //get the settings.html
+              if (!$templateCache.get(settingsUrl)) {
+                $log.log('ngGridder: load settings from url', settingsUrl);
+                $http.get(settingsUrl).success(function (data) {
+                  compilePanel('.ng-gridder-settings-content', $templateCache.put(settingsUrl, data), panelScope);
+                }).error(function () {
+                  $log.error('ngGridder: error, can\'t find settings template:', settingsUrl);
+                });
+              } else {
+                $log.log('ngGridder: load settings from cache', settingsUrl);
+                compilePanel('.ng-gridder-settings-content', $templateCache.get(settingsUrl), panelScope);
+              }
             } else {
-              $log.log('ngGridder: load settings from cache', settingsUrl);
-              compilePanel('.ng-gridder-settings-content', $templateCache.get(settingsUrl), panelScope);
+              scope.showSettings = false;
             }
           } else {
             scope.showSettings = true;
@@ -205,6 +209,9 @@ angular.module('ngGridder', []).provider('ngGridderSettings', function ngGridder
             $scope.cols.splice(colIndex, 1);
             $scope._changed();
             $log.log('ngGridder: remove col', colIndex);
+          };
+          $scope.addCol = function () {
+            $scope._addCol();
           };
           $scope._addCol = function (colIndex) {
             if (!angular.isNumber(colIndex)) {

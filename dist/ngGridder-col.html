@@ -10,8 +10,6 @@
 
   <!-- Select the type -->
   <div ng-if="!col.type" class="ng-gridder-pre-settings">
-    <h1>Settings {{col.type}}</h1>
-
     <select class="form-control" ng-model="col.type">
       <option ng-repeat="type in types" ng-value="type">{{type}}</option>
     </select>
@@ -19,8 +17,6 @@
 
   <!-- Set settings -->
   <div ng-if="col.type" ng-show="showSettings" class="ng-gridder-settings">
-    <h1>Settings {{col.type}}</h1>
-
     <form role="form" name="settings" class="ng-gridder-settings-form">
       <div class="ng-gridder-settings-content"></div>
 
@@ -54,8 +50,6 @@
 
   <!-- Set panel -->
   <div ng-if="col.type" ng-hide="showSettings" class="ng-gridder-panel">
-    <h1>{{col.type}}</h1>
-
     <div class="ng-gridder-panel-content"></div>
   </div>
 </div>
