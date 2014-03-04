@@ -1,4 +1,4 @@
-  # ngGridder
+# ngGridder
 
 Combine AngularJS and Twitter Bootstrap grid system into an editable grid (codename laughing-meme). Every grid panel loads a directive for settings and the content. Did you know you can nest ngGridder in ngGridder? See the example.
 
@@ -66,15 +66,27 @@ With ```ngGridderSettingsProvider``` you can change a few defaults.
 }
 ```
 
+### panelTypes
+
+List of panels available in ```./views/panels/```.
+
+```javascript
+$scope.panelTypes = [
+  "grid", // ./views/panels/grid/…
+  "abc", // ./views/panels/abc/…
+  "def" // ./views/panels/def/…
+];
+```
+
 ### Layout
  
 ```javascript
 $scope.layout = [
   { // A Row
-    lockPosition: true, // false/undefined for read-write, true for read-only (overrules the global)
+    operations: {…}, // overrules the global
     cols: [
       { // A col (or panel)
-        lockPosition: true, // false/undefined for read-write, true for read-only (overrules the global and row)
+        operations: {…}, // overrules the global and row
         type: '…', // Name of the panel directory
         width: { // Bootstrap grid system http://getbootstrap.com/css/#grid
           xs: 12, // Class prefix .col-xs-
@@ -99,15 +111,15 @@ See the example for more options.
 ```javascript
 $scope.operations = {
       row:{
-        add: false, // let the user add more rows
-        remove: false, // let the user remove rows
-        position: true // up en down, let the user change the position of a row
+        add: false, // true, let the user add more rows
+        remove: false, // true, let the user remove rows
+        position: true // true, let the user change the position of a row (up en down)
       },
       col:{
-        add: false, // let the user add more cols
-        remove: false, // let the user remove cols
-        position: false, // left en right, let the user change the position of a col
-        settings: false // let the user change settings
+        add: false, // true, let the user add more cols
+        remove: false, // true, let the user remove cols
+        position: false, // true, let the user change the position of a col (left en right)
+        settings: false // true, let the user change settings, changes only the view
       }
     };
 ```

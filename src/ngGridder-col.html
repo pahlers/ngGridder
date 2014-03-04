@@ -3,7 +3,7 @@
     <div class="btn-group">
       <button ng-if="colOperations.settings" class="btn ng-gridder-nav-settings-col" ng-click="toggleSettings()"><span class="glyphicon glyphicon-cog"></span></button>
       <button ng-if="colOperations.position && !$first" class="btn ng-gridder-nav-left-col" ng-click="left()"><span class="glyphicon glyphicon-chevron-left"></span></button>
-      <button ng-if="colOperations.position && !last" class="btn ng-gridder-nav-right-col" ng-click="right()"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      <button ng-if="colOperations.position && !$last" class="btn ng-gridder-nav-right-col" ng-click="right()"><span class="glyphicon glyphicon-chevron-right"></span></button>
       <button ng-if="colOperations.remove" class="btn ng-gridder-nav-remove-col" ng-click="remove()"><span class="glyphicon glyphicon-minus"></span></button>
     </div>
   </div>
